@@ -1,35 +1,25 @@
 import './App.css';
-import Home from './Pages/Home';
-import {
-   createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
-import ProdutInfo from './Pages/ProductInfo'
-import CompanyInfo from './Pages/CompanyInfo'
+
+
 import Table from './Components/Table';
+import StepperForm from './Components/StepperForm';
+import CompanyTable from './Components/CompanyTable';
+import { Provider } from 'react-redux';
+import { store } from "./Store/Store.js";
+import { Container, Box } from '@mui/material';
 
 function App() {
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/product",
-      element: <ProdutInfo />,
-    },
-    {
-      path: "/company",
-      element: <CompanyInfo />,
-    },
-    {
-      path: "/table",
-      element: <Table />,
-    },
-  ]);
   return (
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <Container>
+        <Box my={4}>
+          <StepperForm />
+          <Box my={4}>
+            <CompanyTable />
+          </Box>
+        </Box>
+      </Container>
+    </Provider>
   );
 }
 

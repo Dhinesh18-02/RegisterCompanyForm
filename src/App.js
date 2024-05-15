@@ -1,7 +1,4 @@
 import './App.css';
-
-
-import Table from './Components/Table';
 import StepperForm from './Components/StepperForm';
 import CompanyTable from './Components/CompanyTable';
 import { Provider } from 'react-redux';

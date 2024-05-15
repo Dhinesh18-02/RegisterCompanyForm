@@ -45,7 +45,7 @@ const CompanyTable = () => {
                         ))}
                     </TableBody>
                 </React.Fragment> :
-                    <p style={{ height: "50px", position: "relative", left: "520px", top: "15px", color: "#bdbdbd" }}>No Data</p>
+                    <div style={{ height: "50px", position: "relative", left: "520px", top: "15px", color: "#bdbdbd" }}>No Data</div>
                 }
             </Table>
         </TableContainer>

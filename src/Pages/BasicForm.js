@@ -1,10 +1,10 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { TextField, Button, MenuItem, Box, Typography } from '@mui/material';
+import { TextField, Button, MenuItem, Box, Typography, InputLabel, Stack } from '@mui/material';
 import * as Yup from 'yup';
 import { styled } from '@mui/system';
 import { addSteps, joinForms } from '../Store/Slices/companySlice';
-import { useDispatch ,useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const initialValues = {
     companyName: '',
@@ -20,6 +20,7 @@ const initialValues = {
     keyContactCountryCode: '',
     keyContactNumber: '',
     keyContactEmail: '',
+    logo: null,
 };
 
 const validationSchema = Yup.object().shape({
@@ -36,6 +37,9 @@ const validationSchema = Yup.object().shape({
     keyContactCountryCode: Yup.string().required('Country Code is required'),
     keyContactNumber: Yup.string().required('Contact Number is required'),
     keyContactEmail: Yup.string().email('Invalid email').required('Email is required'),
+    // logo: Yup.mixed().test('fileType', 'Unsupported File Format', (value) => {
+    //     return value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+    // })
 });
 
 const FormContainer = styled(Box)(({ theme }) => ({
@@ -48,7 +52,7 @@ const FormContainer = styled(Box)(({ theme }) => ({
 
 const BasicForm = () => {
     const dispatch = useDispatch();
-    const valuesInitial = useSelector((state)=> state.company.joinForms)
+    const valuesInitial = useSelector((state) => state.company.joinForms)
     const handleSubmit = (values) => {
         dispatch(addSteps());
         dispatch(joinForms(values));
@@ -59,137 +63,172 @@ const BasicForm = () => {
         <Formik
             initialValues={valuesInitial || initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values)=>handleSubmit(values)}
+            onSubmit={(values) => handleSubmit(values)}
         >
-            {({ errors, touched, values }) => (
+            {({ errors, touched, values, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" gap={50}>
-                    <FormContainer>
-                        <Typography variant="h6">Basic Company Information</Typography>
-                        <Field
-                            name="companyName"
-                            as={TextField}
-                            label="Company Name"
-                            error={touched.companyName && !!errors.companyName}
-                            helperText={touched.companyName && errors.companyName}
-                            fullWidth
-                        />
-                        <Field
-                            name="headOfficeAddress"
-                            as={TextField}
-                            label="Head Office Address"
-                            error={touched.headOfficeAddress && !!errors.headOfficeAddress}
-                            helperText={touched.headOfficeAddress && errors.headOfficeAddress}
-                            fullWidth
-                        />
-                        <Field
-                            name="country"
-                            as={TextField}
-                            label="Country"
-                            select
-                            error={touched.country && !!errors.country}
-                            helperText={touched.country && errors.country}
-                            fullWidth
-                        >
-                            <MenuItem value="USA">USA</MenuItem>
-                            <MenuItem value="Canada">Canada</MenuItem>
-                            <MenuItem value="UK">UK</MenuItem>
-                        </Field>
-                        <Box display="flex" gap={2}>
-                            <Field
-                                name="postalCode"
-                                as={TextField}
-                                label="Postal Code"
-                                error={touched.postalCode && !!errors.postalCode}
-                                helperText={touched.postalCode && errors.postalCode}
-                                fullWidth
-                            />
-                            <Field
-                                name="city"
-                                as={TextField}
-                                label="City"
-                                error={touched.city && !!errors.city}
-                                helperText={touched.city && errors.city}
-                                fullWidth
-                            />
-                        </Box>
-                        <Box display="flex" gap={2}>
-                            <Field
-                                name="countryCode"
-                                as={TextField}
-                                label="Country Code"
-                                error={touched.countryCode && !!errors.countryCode}
-                                helperText={touched.countryCode && errors.countryCode}
-                                fullWidth
-                            />
-                            <Field
-                                name="contactNumber"
-                                as={TextField}
-                                label="Contact Number"
-                                error={touched.contactNumber && !!errors.contactNumber}
-                                helperText={touched.contactNumber && errors.contactNumber}
-                                fullWidth
-                            />
-                        </Box>
-                        <Field
-                            name="websiteURL"
-                            as={TextField}
-                            label="Website URL"
-                            error={touched.websiteURL && !!errors.websiteURL}
-                            helperText={touched.websiteURL && errors.websiteURL}
-                            fullWidth
-                        />
-
-                        <Typography variant="h6" marginTop={4}>
-                            Key Contact Person
+                    <Stack direction='row' spacing={40} >
+                        <Box display="flex" gap={50}>
+                            <FormContainer>
+                                <Typography variant="h6">Basic Company Information</Typography>
+                                <InputLabel required>Company Name</InputLabel>
+                                <Field
+                                    name="companyName"
+                                    as={TextField}
+                                    label="Name"
+                                    error={touched.companyName && !!errors.companyName}
+                                    helperText={touched.companyName && errors.companyName}
+                                    fullWidth
+                                />
+                                <InputLabel required>Head Office Address</InputLabel>
+                                <Field
+                                    name="headOfficeAddress"
+                                    as={TextField}
+                                    label="Street Number, House Number"
+                                    error={touched.headOfficeAddress && !!errors.headOfficeAddress}
+                                    helperText={touched.headOfficeAddress && errors.headOfficeAddress}
+                                    fullWidth
+                                />
+                                <InputLabel required>Country</InputLabel>
+                                <Field
+                                    name="country"
+                                    as={TextField}
+                                    label="Select an Option"
+                                    select
+                                    error={touched.country && !!errors.country}
+                                    helperText={touched.country && errors.country}
+                                    fullWidth
+                                >
+                                    <MenuItem value="India">India</MenuItem>
+                                    <MenuItem value="Canada">Canada</MenuItem>
+                                    <MenuItem value="UK">UK</MenuItem>
+                                </Field>
+                                <Box display="flex" gap={2}>
+                                    <Field
+                                        name="postalCode"
+                                        as={TextField}
+                                        label="Postal Code"
+                                        error={touched.postalCode && !!errors.postalCode}
+                                        helperText={touched.postalCode && errors.postalCode}
+                                        fullWidth
+                                    />
+                                    <Field
+                                        name="city"
+                                        as={TextField}
+                                        label="City"
+                                        error={touched.city && !!errors.city}
+                                        helperText={touched.city && errors.city}
+                                        fullWidth
+                                    />
+                                </Box>
+                                <Box display="flex" gap={2}>
+                                    <Field
+                                        name="countryCode"
+                                        as={TextField}
+                                        label="Code"
+                                        select
+                                        error={touched.countryCode && !!errors.countryCode}
+                                        helperText={touched.countryCode && errors.countryCode}
+                                        fullWidth
+                                    >
+                                        <MenuItem value="+91">+91</MenuItem>
+                                        <MenuItem value="+021">+021</MenuItem>
+                                        <MenuItem value="+124">+124</MenuItem>
+                                    </Field>
+                                    <Field
+                                        name="contactNumber"
+                                        as={TextField}
+                                        label="Contact Number"
+                                        error={touched.contactNumber && !!errors.contactNumber}
+                                        helperText={touched.contactNumber && errors.contactNumber}
+                                        fullWidth
+                                    />
+                                </Box>
+                                <InputLabel required>Website URL</InputLabel>
+                                <Field
+                                    name="websiteURL"
+                                    as={TextField}
+                                    label="https://"
+                                    error={touched.websiteURL && !!errors.websiteURL}
+                                    helperText={touched.websiteURL && errors.websiteURL}
+                                    fullWidth
+                                />
+                                <Typography variant="h6" marginTop={4}>
+                                    Key Contact Person
             </Typography>
-                        <Field
-                            name="keyContactName"
-                            as={TextField}
-                            label="Name"
-                            error={touched.keyContactName && !!errors.keyContactName}
-                            helperText={touched.keyContactName && errors.keyContactName}
-                            fullWidth
-                        />
-                        <Field
-                            name="keyContactDesignation"
-                            as={TextField}
-                            label="Designation"
-                            error={touched.keyContactDesignation && !!errors.keyContactDesignation}
-                            helperText={touched.keyContactDesignation && errors.keyContactDesignation}
-                            fullWidth
-                        />
-                        <Box display="flex" gap={2}>
-                            <Field
-                                name="keyContactCountryCode"
-                                as={TextField}
-                                label="Country Code"
-                                error={touched.keyContactCountryCode && !!errors.keyContactCountryCode}
-                                helperText={touched.keyContactCountryCode && errors.keyContactCountryCode}
-                                fullWidth
-                            />
-                            <Field
-                                name="keyContactNumber"
-                                as={TextField}
-                                label="Contact Number"
-                                error={touched.keyContactNumber && !!errors.keyContactNumber}
-                                helperText={touched.keyContactNumber && errors.keyContactNumber}
-                                fullWidth
-                            />
-                        </Box>
-                        <Field
-                            name="keyContactEmail"
-                            as={TextField}
-                            label="Email"
-                            error={touched.keyContactEmail && !!errors.keyContactEmail}
-                            helperText={touched.keyContactEmail && errors.keyContactEmail}
-                            fullWidth
-                        />
-                        <Button type='submit' variant="contained" color="primary">
-                            CONTINUE
+                                <InputLabel required>Name</InputLabel>
+                                <Field
+                                    name="keyContactName"
+                                    as={TextField}
+                                    label="Name"
+                                    error={touched.keyContactName && !!errors.keyContactName}
+                                    helperText={touched.keyContactName && errors.keyContactName}
+                                    fullWidth
+                                />
+                                <InputLabel required>Designation</InputLabel>
+                                <Field
+                                    name="keyContactDesignation"
+                                    as={TextField}
+                                    label="Designation"
+                                    error={touched.keyContactDesignation && !!errors.keyContactDesignation}
+                                    helperText={touched.keyContactDesignation && errors.keyContactDesignation}
+                                    fullWidth
+                                />
+                                <Box display="flex" gap={2}>
+                                    <Field
+                                        name="keyContactCountryCode"
+                                        as={TextField}
+                                        label="Code"
+                                        select
+                                        error={touched.keyContactCountryCode && !!errors.keyContactCountryCode}
+                                        helperText={touched.keyContactCountryCode && errors.keyContactCountryCode}
+                                        fullWidth
+                                    >
+                                        <MenuItem value="+91">+91</MenuItem>
+                                        <MenuItem value="+021">+021</MenuItem>
+                                        <MenuItem value="+124">+124</MenuItem>
+                                    </Field>
+                                    <Field
+                                        name="keyContactNumber"
+                                        as={TextField}
+                                        label="Contact Number"
+                                        error={touched.keyContactNumber && !!errors.keyContactNumber}
+                                        helperText={touched.keyContactNumber && errors.keyContactNumber}
+                                        fullWidth
+                                    />
+                                </Box>
+                                <InputLabel required>Email</InputLabel>
+                                <Field
+                                    name="keyContactEmail"
+                                    as={TextField}
+                                    label="Email"
+                                    error={touched.keyContactEmail && !!errors.keyContactEmail}
+                                    helperText={touched.keyContactEmail && errors.keyContactEmail}
+                                    fullWidth
+                                />
+
+                                <Button type='submit' variant="contained" color="primary">
+                                    CONTINUE
             </Button>
-                        </FormContainer>
-                    </Box>
+                            </FormContainer>
+                        </Box>
+                        <Box my={4}>
+                            <FormContainer>
+                                <div>
+                                    <InputLabel >Company Logo</InputLabel>
+                                </div>
+                                <div>
+                                    <input
+                                        name="logo"
+                                        type="file"
+                                        onChange={(event) => {
+                                            setFieldValue('logo', event.currentTarget.files[0]);
+                                        }}
+                                    />
+                                </div>
+                            </FormContainer>
+                        </Box>
+                    </Stack>
                 </Form>
             )}
         </Formik>

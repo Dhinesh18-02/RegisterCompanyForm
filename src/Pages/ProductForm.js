@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
-import { TextField, Button, MenuItem, Box, Typography, IconButton } from '@mui/material';
+import { TextField, Button, MenuItem, Box, Typography, IconButton, InputLabel } from '@mui/material';
 import * as Yup from 'yup';
 import { styled } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
         Yup.object().shape({
             productName: Yup.string().required('Product Name is required'),
             productPortfolioDescription: Yup.string().required('Description is required'),
-            productWebsite: Yup.string().required('required'),
+            productWebsite: Yup.string(),
         })
     ),
 });
@@ -67,6 +67,7 @@ const ProductForm = () => {
                                                 </IconButton>
                                             </Box>
                                             <FormContainer>
+                                                <InputLabel required>Product Name</InputLabel>
                                                 <Field
                                                     name={`productDetails[${index}].productName`}
                                                     as={TextField}
@@ -75,26 +76,26 @@ const ProductForm = () => {
                                                     helperText={touched.productDetails?.[index]?.productName && errors.productDetails?.[index]?.productName}
                                                     fullWidth
                                                 />
+                                                <InputLabel required>Product Portfolio description</InputLabel>
                                                 <Field
                                                     name={`productDetails[${index}].productPortfolioDescription`}
                                                     as={TextField}
                                                     multiline
                                                     rows={4}
-                                                    label="Product Portfolio Description"
+                                                    label="Brief Portfolio Description"
                                                     error={touched.productDetails?.[index]?.productPortfolioDescription && !!errors.productDetails?.[index]?.productPortfolioDescription}
                                                     helperText={touched.productDetails?.[index]?.productPortfolioDescription && errors.productDetails?.[index]?.productPortfolioDescription}
                                                     fullWidth
                                                 />
-
+                                                <InputLabel> Facebook/Linkedin Page URL, Etc.</InputLabel>
                                                 <Field
                                                     name={`productDetails[${index}].productWebsite`}
                                                     as={TextField}
-                                                    label="Website URL"
+                                                    label="https://"
                                                     error={touched.productDetails?.[index]?.productWebsite && !!errors.productDetails?.[index]?.productWebsite}
                                                     helperText={touched.productDetails?.[index]?.productWebsite && errors.productDetails?.[index]?.productWebsite}
                                                     fullWidth
                                                 />
-
                                             </FormContainer>
                                         </Box>
                                     ))}
